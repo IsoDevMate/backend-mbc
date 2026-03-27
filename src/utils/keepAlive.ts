@@ -10,10 +10,10 @@ export function startKeepAlive() {
   // Prevent cold starts - ping every 14 minutes
   cron.schedule('*/14 * * * *', async () => {
     try {
-      const response = await fetch(`${url}/health`, { 
-        method: 'GET',
-        timeout: 10000 
-      });
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 10000);
+      const response = await fetch(`${url}/health`, { method: 'GET', signal: controller.signal });
+      clearTimeout(timer);
       if (response.ok) {
         console.log(`[keep-alive] ✓ pinged at ${new Date().toISOString()}`);
       } else {
