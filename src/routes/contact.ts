@@ -16,12 +16,15 @@ router.post('/', async (req: Request, res: Response) => {
 
   try {
     await sendContactNotification({ fullName, email, phone, message });
-  } catch {
-    // log but don't fail the request if email fails
-    console.error('Email notification failed');
+    res.status(201).json({ success: true, id: contact._id });
+  } catch (error) {
+    console.error('Email notification failed:', error);
+    res.status(201).json({ 
+      success: true, 
+      id: contact._id, 
+      warning: 'Contact saved but email notification failed' 
+    });
   }
-
-  res.status(201).json({ success: true, id: contact._id });
 });
 
 export default router;

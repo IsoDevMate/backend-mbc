@@ -9,7 +9,7 @@ export const sendContactNotification = async (data: {
   message: string;
 }) => {
   await resend.emails.send({
-    from: 'MabCas Labs <info@MabCasLabs.com>',
+    from: 'MabCas Labs <info@mabcaslabs.com>',
     to: process.env.NOTIFICATION_EMAIL!,
     subject: `New Contact Form Submission from ${data.fullName}`,
     html: `
